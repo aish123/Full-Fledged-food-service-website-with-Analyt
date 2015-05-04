@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Pizza Lelo Pizza</title>
+	
+	  <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/business-casual.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+	
+	
+	<!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	 -->
+	 
+	 	<!-- jQuery -->
+    <script src="js/jquery.js" defer></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js" defer></script>
+	 
+  
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    	<!-- angular.js -->
+	 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	 <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+
+    <link rel="stylesheet" href="css/main_css.css">
+
+    <script>
+        window.onload = function() {
+
+            /**
+             *
+             *	Demo 1: Elements
+             *
+             */
+            var dropZoneOne = document.querySelector('#drop-target-one');
+            var dragElements = document.querySelectorAll('#drag-elements li');
+            var elementDragged = null;
+
+
+            for (var i = 0; i < dragElements.length; i++) {
+
+                // Event Listener for when the drag interaction starts.
+                dragElements[i].addEventListener('dragstart', function(e) {
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('Text/html', e.target.id); // sends the dragged images data.
+                    elementDragged = this;
+                });
+
+                // Event Listener for when the drag interaction finishes.
+                dragElements[i].addEventListener('dragend', function(e) {
+                    elementDragged = null;
+                });
+            };
+
+            // Event Listener for when the dragged element is over the drop zone.
+            dropZoneOne.addEventListener('dragover', function(e) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+
+                e.dataTransfer.dropEffect = 'move';
+
+                return false;
+            });
+
+            // Event Listener for when the dragged element enters the drop zone.
+            dropZoneOne.addEventListener('dragenter', function(e) {
+                this.className = "over";
+            });
+
+            // Event Listener for when the dragged element leaves the drop zone.
+            dropZoneOne.addEventListener('dragleave', function(e) {
+                this.className = "";
+            });
+
+            // Event Listener for when the dragged element dropped in the drop zone.
+            dropZoneOne.addEventListener('drop', function(e) {
+                if (e.preventDefault) e.preventDefault();
+                if (e.stopPropagation) e.stopPropagation();
+
+                this.className = "";
+
+                 sidetype = e.dataTransfer.getData("text/html");//retrieves dropped images data.
+
+                this.innerHTML = "Item added to cart!!! Add More ";
+                var sidenum;
+                if(sidetype=="drag1")
+                {
+                     sidenum=1;
+                    addSides(1);
+                }
+                else if(sidetype=="drag2")
+                {
+                    sidenum=2;
+                    addSides(2);
+                }
+
+                else if(sidetype=="drag3")
+                {
+                    sidenum=3;
+                    addSides(3);
+                }
+
+                else(sidetype=="drag4")
+                {
+                    sidenum=4;
+                    addSides(4);
+                }
+                // Remove the element from the list.
+                document.querySelector('#drag-elements').removeChild(elementDragged);
+                elementDragged = null;
+
+                return false;
+            });
+
+             function addSides(sidenum) {
+                if (sidenum == 1) {
+                    var item = {"name": "Breadsticks", "vegnv": "v", "cost": "7.00"};
+                }
+                else if (sidenum == 2) {
+                    var item = {"name": "Pepsi", "vegnv": "v", "cost": "2.99"};
+                }
+                else if(sidenum == 3){
+                    var item = {"name": "cinammon sticks", "vegnv": "v", "cost": "7.99"};
+
+                }
+                else{
+                var item = {"name": "cookies", "vegnv": "v", "cost": "6.99"};
+                }
+
+                var cart= JSON.parse(sessionStorage.getItem("cart"));
+                if(cart==null)
+                {
+                    cart=[item];
+                    console.log(cart.length)
+                    sessionStorage.setItem("cart",JSON.stringify(cart));
+                }
+                else
+                {
+                    console.log("cart not empty");
+                    cart.push(item);
+                    sessionStorage.setItem("cart",JSON.stringify(cart));
+                }
+
+                console.log(JSON.parse((sessionStorage.getItem("cart"))));
+                displayCart();
+            };
+
+
+
+
+
+
+
+            /**
+             *
+             *	Demo 2
+             *
+             */
+            var dropZoneTwo = document.querySelector('#dd-files');
+            var fileContentPane = document.querySelector('#file-content');
+
+            // Event Listener for when the dragged file is over the drop zone.
+            dropZoneTwo.addEventListener('dragover', function(e) {
+                if (e.preventDefault) e.preventDefault();
+                if (e.stopPropagation) e.stopPropagation();
+
+                e.dataTransfer.dropEffect = 'copy';
+            });
+
+            // Event Listener for when the dragged file enters the drop zone.
+            dropZoneTwo.addEventListener('dragenter', function(e) {
+                this.className = "over";
+            });
+
+            // Event Listener for when the dragged file leaves the drop zone.
+            dropZoneTwo.addEventListener('dragleave', function(e) {
+                this.className = "";
+            });
+
+            // Event Listener for when the dragged file dropped in the drop zone.
+            dropZoneTwo.addEventListener('drop', function(e) {
+                if (e.preventDefault) e.preventDefault();
+                if (e.stopPropagation) e.stopPropagation();
+
+                this.className = "";
+
+                var fileList = e.dataTransfer.files;
+
+                if (fileList.length > 0) {
+                    readTextFile(fileList[0]);
+                }
+            });
+
+
+            // Read the contents of a file.
+            function readTextFile(file) {
+                var reader = new FileReader();
+
+                reader.onloadend = function(e) {
+                    if (e.target.readyState == FileReader.DONE) {
+                        var content = reader.result;
+                        fileContentPane.innerHTML = "File: " + file.name + "\n\n" + content;
+                    }
+                }
+
+                reader.readAsBinaryString(file);
+            }
+
+        };
+
+    </script>
+
+
+</head>
+
+<body>
+<div ng-app="" ng-controller="sidesController">
+<header>
+    <div class="brand">Pizza Lelo Pizza</div>
+    <div class="address-bar">Happy Pizzas To Make Happy Times</div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                <a class="navbar-brand" href="index.html">Business Casual</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+               <ul class="nav navbar-nav">
+                 <li>
+                        <a href="#" ng-click="homePage()">HOME</a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="pizzaPage()">PIZZA</a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="buildYourOwnPage()">BUILD YOUR OWN</a>
+                    </li>
+                    <li class="active">
+                        <a href="#" ng-click="sidesPage()">SIDES</a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="dealsPage()">DEALS</a>
+                    </li>
+                   <li>
+                        <a href="#" ng-click="findUsPage()">Find Us</a>
+                    </li>
+                <li class="dropdown">
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-shopping-cart"></span> <span  id="itemNumber"></span><span class="caret"></span></a>
+         	<ul class="dropdown-menu" id="theCart" role="menu">
+            </ul>
+             </li>
+                </ul>
+               
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    </header>
+</div>
+</body>
+<body>
+    <div class="container1">
+        <h1 style="color: white">Add Sides to your Order</h1>
+
+        <p style="color: white">Drag the items to the drop zone to add into your cart.</p>
+        <div id="dd-elements" class="clearfix">
+            <ul id="drag-elements">
+                <li draggable="true"><img src="img/breadsticks.jpg" draggable="true" ondragstart="drag(event)" id="drag1" width:"200px" height="200px" align="center ">
+                </li>
+                <li draggable="true"><img src="img/pepsi.jpg" draggable="true" ondragstart="drag(event)" id="drag2" width:"200px" height="200px" align="center ">
+                </li>
+                <li draggable="true"><img src="img/cinnamon.jpg" draggable="true" ondragstart="drag(event)" id="drag3" width:"130px" height="190px" align="center "></li>
+                <li draggable="true"><img src="img/cookie1.jpg" draggable="true" ondragstart="drag(event)" id="drag4" width:"150px" height="200px" align="center "></li>
+            </ul>
+            <div><p style="color: #fffd59">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Breadsticks $7.00 &nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                Pepsi $2.99&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;Cinammon Sticks $ 7.99&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;Chocolate Cookie $ 6.99</p> </div>
+            <div id="drop-target-one">
+               <p style="color: white"> Drop Here! To add to your cart</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+
+        <div class="container" align="center">
+    
+        <div class="row">
+  			<div class="col-sm-6">
+  			<h3>ORDER</h3>
+  			<a href="#" ng-click="sidesPage()"><h4 style="color:grey;">Sides</h4></a>
+  			<a href="#" ng-click="pizzaPage()"><h4 style="color:grey;">Pizza</h4></a>
+  			<a href="#" ng-click="dealsPage()"><h4 style="color:grey;">Deals</h4></a>
+  			<a href="#" ng-click="buildYourOwnPage()"><h4 style="color:grey;">Build your Own</h4></a>
+  			</div>
+  			<div class="col-sm-6">
+  			<h3>ABOUT US</h3>
+  			<a href="#" ng-click="faqsPage()"><h4 style="color:grey;">FAQs</h4></a>
+  			<a href="#" ng-click="findUsPage()"><h4 style="color:grey;">Find Us</h4></a>
+  			<a href="#" ng-click="ourStoryPage()"><h4 style="color:grey;">Our Story</h4></a>
+  			<a href="#" ng-click="contactUsPage()"><h4 style="color:grey;">Contact Us</h4></a>
+  			</div>
+		</div>
+            </div>
+            
+            <p align="center">Copyright &copy; pizzalelopizza-pizzalelopizza.rhcloud.com</p>
+    </footer>
+    </div> <!-- ng-app -->
+    
+       <script>
+    	 function checkOutPage()
+       {
+             	window.location = '/checkOutPage';
+       }
+    function sidesController($scope,$http,$location) {
+    	displayCart();
+         
+           	function displayCart(){
+           	if(JSON.parse(sessionStorage.getItem("cart"))!=null)
+           	{
+           	var itemNumber = JSON.parse(sessionStorage.getItem("cart")).length;
+           	document.getElementById("itemNumber").innerHTML=itemNumber;
+           	var cart= JSON.parse(sessionStorage.getItem("cart"));
+           		var ul = document.getElementById("theCart");
+           		ul.innerHTML = '';
+           		
+           	for (var i=0;i<itemNumber;i++) {
+       	      	var ul = document.getElementById("theCart");
+       	    	var li = document.createElement("li");
+       	    	ul.appendChild(li);
+       	    	li.innerHTML = '<a href="">'+cart[i].name+'--$'+cart[i].cost+'</a>';
+       	       	}
+       	       	
+       	       	var li = document.createElement("li");
+       	    	ul.appendChild(li);
+       	    	li.innerHTML = '<div style="text-align: center;"><button type="button" class="btn btn-warning" onclick="checkOutPage()">Checkout</button></div>';
+       	    	
+       	       	}
+       	       	else
+       	       	{
+       	       	var ul = document.getElementById("theCart");
+    			ul.innerHTML = '';
+    			document.getElementById("itemNumber").innerHTML="";
+       	       	}
+       	}
+		$scope.homePage = function() {
+		window.location = '/index';
+		};
+		$scope.pizzaPage = function() {
+		window.location = '/pizzaPage';
+		};
+		$scope.buildYourOwnPage = function() {
+		window.location = '/buildYourOwnPage';
+		};
+		
+		$scope.sidesPage = function() {
+		window.location = '/sidesPage';
+		};
+		$scope.dealsPage = function() {
+		window.location = '/dealsPage';
+		};
+		$scope.findUsPage = function() {
+		window.location = '/findUsPage';
+		};
+		$scope.faqsPage = function() {
+		window.location = '/faqsPage';
+		};
+		$scope.ourStoryPage = function() {
+		window.location = '/ourStoryPage';
+		};
+		$scope.contactUsPage = function() {
+		window.location = '/contactUsPage';
+		};
+		}
+		</script>
+		
+		
+    </body>
+
+</html>
